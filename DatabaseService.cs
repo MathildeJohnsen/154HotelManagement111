@@ -120,7 +120,7 @@ namespace NyHotelManagementDesktop
             {
                 await conn.OpenAsync();
 
-                // Sjekk om det finnes overlappende reservasjoner for samme rom som ikke er utsjekket
+                
                 var query = @"SELECT COUNT(*) FROM Reservations
                       WHERE RoomId = @RoomId
                       AND Status != 2 -- Ikke utsjekket
@@ -145,7 +145,7 @@ namespace NyHotelManagementDesktop
             {
                 await connection.OpenAsync();
 
-                // Oppdater status
+                
                 var updateStatusQuery = "UPDATE Reservations SET Status = @Status WHERE Id = @Id";
                 using (var command = new SqlCommand(updateStatusQuery, connection))
                 {
@@ -154,10 +154,10 @@ namespace NyHotelManagementDesktop
                     await command.ExecuteNonQueryAsync();
                 }
 
-                // Hvis gjesten sjekker ut (status = 2), sett rommet som ledig
+                
                 if (newStatus == 2)
                 {
-                    // Hent RoomId
+                    
                     var getRoomIdQuery = "SELECT RoomId FROM Reservations WHERE Id = @Id";
                     int roomId;
                     using (var command = new SqlCommand(getRoomIdQuery, connection))
@@ -166,7 +166,7 @@ namespace NyHotelManagementDesktop
                         roomId = (int)await command.ExecuteScalarAsync();
                     }
 
-                    // Sett IsAvailable = 1
+                   
                     var updateRoomQuery = "UPDATE Rooms SET IsAvailable = 1 WHERE Id = @RoomId";
                     using (var command = new SqlCommand(updateRoomQuery, connection))
                     {
@@ -183,7 +183,7 @@ namespace NyHotelManagementDesktop
             {
                 await conn.OpenAsync();
 
-                // Get RoomId for reservation to update room availability
+                
                 var roomIdQuery = "SELECT RoomId FROM Reservations WHERE Id = @Id";
                 int roomId;
                 using (var cmd = new SqlCommand(roomIdQuery, conn))
