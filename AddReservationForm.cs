@@ -12,28 +12,20 @@ namespace NyHotelManagementDesktop
 {
     public partial class AddReservationForm : Form
     {
-        private DatabaseService dbService; //  ENDRING
+        private DatabaseService dbService;
         private Action<Reservation> onReservationAdded;
 
-        // private List<Room> availableRooms; 
-        // private Action<Reservation> onReservationAdded;
+     
 
 
-        public AddReservationForm(/*List<Room> rooms, Action<Reservation> reservationAddedCallback)
+        public AddReservationForm(DatabaseService dbService, Action<Reservation> reservationAddedCallback) 
         {
             InitializeComponent();
-            this.availableRooms = rooms;
-            this.onReservationAdded = reservationAddedCallback;
-            cmbRoomSelection.DataSource = availableRooms;
-            cmbRoomSelection.DisplayMember = "RoomType";
-        }*/DatabaseService dbService, Action<Reservation> reservationAddedCallback) // 🔄 ENDRING
-        {
-            InitializeComponent();
-            this.dbService = dbService; //  ENDRING
+            this.dbService = dbService; 
             this.onReservationAdded = reservationAddedCallback;
 
-            dtpCheckInDate.ValueChanged += DateChanged; //  ENDRING
-            dtpCheckOutDate.ValueChanged += DateChanged; //  ENDRING
+            dtpCheckInDate.ValueChanged += DateChanged; 
+            dtpCheckOutDate.ValueChanged += DateChanged; 
         }
 
         private void AddReservationForm_Load(object sender, EventArgs e)
@@ -78,7 +70,7 @@ namespace NyHotelManagementDesktop
                 return;
             }
 
-            var dbService = new DatabaseService();  // evt. bruk felt hvis du allerede har den
+            var dbService = new DatabaseService();  
 
             bool isAvailable = await dbService.IsRoomAvailableAsync(selectedRoom.Id, fromDate, toDate);
             if (!isAvailable)
